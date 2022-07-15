@@ -1,0 +1,314 @@
+openapi: 3.0.3
+info:
+    version: 1.0.0
+    title: XibblyAPI
+    contact:
+        url: https://discord.gg/89gxvAP
+#    description: XibblyAPI
+
+servers:
+    -   url: https://api.xibbly.tk
+
+tags:
+    -   name: GlobalChat
+        description: Czat globalny
+
+paths:
+    /api/globalchat/add:
+        post:
+            operationId: ApiGlobalChatAdd
+            tags:
+                - GlobalChat
+            summary: Dodanie czatu do weryfikacji
+
+            parameters:
+                -   in: body
+                    name: token
+                    description: Token użytkownika
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"eyJhbGciOiJBMjU2R0NNS1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiaXYiOiJQNzlNTmlvNDE3Y2E2S1lyIiwidGFnIjoiZk90R201NGlwQnM5bXFKcm43b2pSdyJ9.IRtdxapkrs5EyJtOKdscx-ehaYfv6DUJdkG_JR83rFSUfpY6iHQaLNxxBMX70NVWlmMlSiqz8vB8eDUdJS7a4g.MnWjWNwZ2U6U1sCDcq25_Q.DhvRAwepzoH60HK6UaRwRCV-c2IZxK38-s7k6SN8sCzstKHczmHNh54RlBd8VDp5zIwWVsAyJoqZz65OWVAOlOKg6lVMhCbliq12Xv4smrRh_-Wj7mTlsu0e7tOufGtYBbKoyjZj1s3MhdUks65Ht7YyyEVDe7oSlij3RpA_7eBIrgf-p838syL9Krj9V_-G.nnhl0ZQq6tG-ClJ_o3ggD2uAfgreQjsbDwpISSsQ0vg\""
+
+                -   in: body
+                    name: guildId
+                    description: ID serwera
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"769813564994355210\""
+
+                -   in: body
+                    name: inviteUrl
+                    description: Zaproszenie na serwer
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"discord.gg/89gxvAP\""
+
+                -   in: body
+                    name: webhookUrl
+                    description: URL webhooka
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"https://discord.com/api/webhooks/997465989316874301/gwL056mz5j7Qe9P4Lfi0Ne61w61k7ISh8V5oGXvZsjBTRtG83Iqsg4iM3R4AfIYbHVFa\""
+
+            responses:
+                200:
+                    description: Dodano czat do weryfikacji
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    guildId:
+                                        type: string
+                                        example: 769813564994355210
+                                    inviteUrl:
+                                        type: string
+                                        example: discord.gg/89gxvAP
+                                    support:
+                                        type: string
+                                        example: discord.gg/89gxvAP
+                                    poweredBy:
+                                        type: string
+                                        example: Xibbly
+
+
+                400:
+                    description: Błędne parametry bądź serwer już oczekuje na weryfikacje
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        enum:
+                                            - Missing parameters
+                                            - Invalid data provided
+                                            - Guild is already waiting for verification
+
+                401:
+                    description: Błędny token
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        example: Invaild token
+
+    /api/globalchat/verify:
+        post:
+            operationId: ApiGlobalChatVerify
+            tags:
+                - GlobalChat
+            summary: Weryfikacja czatu globalnego
+
+            parameters:
+                -   in: body
+                    name: token
+                    description: Token użytkownika
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"xAVE50JfD2Mp@mWV%sGX\""
+
+                -   in: body
+                    name: guildId
+                    description: ID serwera
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"769813564994355210\""
+
+                -   in: body
+                    name: moderatorId
+                    description: ID moderatora
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"548255235823501322\""
+
+            responses:
+                200:
+                    description: Dodano czat do weryfikacji
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    guildId:
+                                        type: string
+                                        example: 769813564994355210
+                                    support:
+                                        type: string
+                                        example: discord.gg/89gxvAP
+                                    poweredBy:
+                                        type: string
+                                        example: Xibbly
+
+
+                400:
+                    description: Błędne parametry
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        enum:
+                                            - Missing parameters
+                                            - Invalid data provided
+
+                401:
+                    description: Błędny token
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        example: Invaild token
+
+                404:
+                    description: Nie znaleziono serwera czatu globalnego
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        example: Guild not found
+
+    /api/globalchat/send:
+        post:
+            operationId: ApiGlobalChatSend
+            tags:
+                - GlobalChat
+            summary: Wysyłanie wiadomości na czat globalny
+
+            parameters:
+                -   in: body
+                    name: token
+                    description: Token użytkownika
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"eyJhbGciOiJBMjU2R0NNS1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiaXYiOiJQNzlNTmlvNDE3Y2E2S1lyIiwidGFnIjoiZk90R201NGlwQnM5bXFKcm43b2pSdyJ9.IRtdxapkrs5EyJtOKdscx-ehaYfv6DUJdkG_JR83rFSUfpY6iHQaLNxxBMX70NVWlmMlSiqz8vB8eDUdJS7a4g.MnWjWNwZ2U6U1sCDcq25_Q.DhvRAwepzoH60HK6UaRwRCV-c2IZxK38-s7k6SN8sCzstKHczmHNh54RlBd8VDp5zIwWVsAyJoqZz65OWVAOlOKg6lVMhCbliq12Xv4smrRh_-Wj7mTlsu0e7tOufGtYBbKoyjZj1s3MhdUks65Ht7YyyEVDe7oSlij3RpA_7eBIrgf-p838syL9Krj9V_-G.nnhl0ZQq6tG-ClJ_o3ggD2uAfgreQjsbDwpISSsQ0vg\""
+
+                -   in: body
+                    name: userId
+                    description: ID użytkownika
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"548255235823501322\""
+
+                -   in: body
+                    name: tag
+                    description: Tag użytkownika
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"SzymonG110#8841\""
+
+                -   in: body
+                    name: avatar_url
+                    description: URL awataru użytkownika
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"https://cdn.discordapp.com/avatars/548255235823501322/1e4ebc17e6c7bea520116d9a2da0f02f.webp\""
+
+                -   in: body
+                    name: guildId
+                    description: ID serwera z którego wysyłana jest wiadomość
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"769813564994355210\""
+
+                -   in: body
+                    name: content
+                    description: Treść wiadomości
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"Hej, dodaj Xibbly!\""
+
+                -   in: body
+                    name: files
+                    description: Pliki
+                    required: true
+                    schema:
+                        type: array
+                        required: true
+                        items:
+                            type: string
+                            example: "https://cdn.discordapp.com/attachments/769813564994355210/769814098984279808/xibbly.png"
+
+            responses:
+                200:
+                    description: Wysłano wiadomość
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    numberOfChannels:
+                                        type: number
+                                        example: 1829
+                                    sendedTo:
+                                        type: number
+                                        example: 1829
+                                    support:
+                                        type: string
+                                        example: discord.gg/89gxvAP
+                                    poweredBy:
+                                        type: string
+                                        example: Xibbly
+
+
+                400:
+                    description: Błędne parametry
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        enum:
+                                            - Missing parameters
+                                            - Invalid data provided
+
+                401:
+                    description: Błędny token
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        example: Invaild token
