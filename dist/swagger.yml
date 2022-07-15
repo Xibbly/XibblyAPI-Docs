@@ -312,3 +312,14 @@ paths:
                                     error:
                                         type: string
                                         example: Invaild token
+
+                403:
+                    description: Użytkownik jest wyciszony
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        example: User is muted
