@@ -323,3 +323,126 @@ paths:
                                     error:
                                         type: string
                                         example: User is muted
+
+    /api/globalchat/mute:
+        post:
+            operationId: ApiGlobalChatMute
+            tags:
+                - GlobalChat
+            summary: Wyciszanie użytkownika
+
+            parameters:
+                -   in: body
+                    name: token
+                    description: Token użytkownika
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"xAVE50JfD2Mp@mWV%sGX\""
+
+                -   in: body
+                    name: userId
+                    description: ID użytkownika
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"548255235823501322\""
+
+                -   in: body
+                    name: moderatorId
+                    description: ID moderatora
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"548255235823501322\""
+
+                -   in: body
+                    name: reason
+                    description: Powód wyciszenia
+                    required: true
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"Spam!\""
+
+                -   in: body
+                    name: expiriedAt
+                    description: Powód wyciszenia
+                    schema:
+                        type: string
+                        required: true
+                        example: "\"1d\""
+
+            responses:
+                200:
+                    description: Dodano czat do weryfikacji
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    userId:
+                                        type: string
+                                        example: 548255235823501322
+                                    moderatorId:
+                                        type: string
+                                        example: 548255235823501322
+                                    reason:
+                                        type: string
+                                        example: Spam!
+                                    mutedAt:
+                                        type: string
+                                        example: 15.07.2022 20:19:14
+                                    expiriedAt:
+                                        type: string
+                                        enum:
+                                            - 16.07.2022 20:19:14
+                                            - Never
+                                    permament:
+                                        type: boolean
+                                        example: false
+                                    support:
+                                        type: string
+                                        example: discord.gg/89gxvAP
+                                    poweredBy:
+                                        type: string
+                                        example: Xibbly
+
+
+                400:
+                    description: Błędne parametry
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        enum:
+                                            - Missing parameters
+                                            - Invalid data provided
+
+                401:
+                    description: Błędny token
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        example: Invaild token
+
+                404:
+                    description: Nie znaleziono serwera czatu globalnego
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        example: User is not found, user is already muted or user is moderator/developer
